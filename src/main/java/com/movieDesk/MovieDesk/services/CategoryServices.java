@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,14 @@ public class CategoryServices {
 
     public Category createCategory(Category category){
         return categoryRepository.save(category);
+    }
+
+    public Optional<Category> getCategoryById(Long id){
+        return categoryRepository.findById(id);
+    }
+
+    public void deleteCategoryById(Long id){
+         categoryRepository.deleteById(id);
     }
 
 }
