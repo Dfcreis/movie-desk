@@ -1,9 +1,15 @@
 package com.movieDesk.MovieDesk.controller;
 
+import com.movieDesk.MovieDesk.controller.request.MovieRequest;
+import com.movieDesk.MovieDesk.controller.response.MovieResponse;
+import com.movieDesk.MovieDesk.entity.Movie;
+import com.movieDesk.MovieDesk.mapper.MovieMapper;
 import com.movieDesk.MovieDesk.services.MovieServices;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/movieDesk/movie")
@@ -12,6 +18,19 @@ public class MovieController {
 
     private final MovieServices movieServices;
 
+    @PostMapping("/create")
+    public ResponseEntity<MovieResponse> createMovie(@RequestBody MovieRequest request) {
+        Movie saveMovie = movieServices.create(MovieMapper.toMovie(request));
+        return ResponseEntity.ok(MovieMapper.toMovieResponse(saveMovie));
+    }
 
+    @GetMapping
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
+        List<Movie> movies = movieServices.getAllMovies();
+        List<MovieResponse> response = movies.stream()
+                .map(movie -> MovieMapper.toMovieResponse(movie))
+                .toList();
+        return ResponseEntity.ok(response);
+    }
 
 }
