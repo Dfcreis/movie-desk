@@ -47,6 +47,19 @@ public class MovieController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/saarch")
+    public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long categoryId) {
+        return ResponseEntity.ok(movieServices.findByCategory(categoryId)
+                .stream()
+                .map(MovieMapper::toMovieResponse)
+                .toList());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam Long id) {
+        movieServices.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 
