@@ -36,6 +36,31 @@ public class MovieServices {
         return movieRepository.findById(id);
     }
 
+    public Optional<Movie> update(Long id, Movie movie){
+        Optional<Movie> byId = movieRepository.findById(id);
+        if (byId.isPresent()){
+
+            List<Category> categories = this.listCategories(movie.getCategories());
+            List<Streaming> streamings = this.listStreaming(movie.getStreamings());
+
+            Movie movieToUpdate = byId.get();
+            movieToUpdate.setTitle(movie.getTitle());
+            movieToUpdate.setDescription(movie.getDescription());
+            movieToUpdate.setReleaseDate(movie.getReleaseDate());
+            movieToUpdate.setRating(movie.getRating());
+
+            movieToUpdate.getCategories().clear();
+            movieToUpdate.getCategories().addAll(categories);
+
+            movieToUpdate.getStreamings().clear();
+            movieToUpdate.getStreamings().addAll(streamings);
+
+            movieRepository.save(movieToUpdate);
+            return Optional.of(movieToUpdate);
+        }
+        return Optional.empty();
+    }
+
 
 
 
