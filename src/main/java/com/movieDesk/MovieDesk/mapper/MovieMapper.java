@@ -35,21 +35,18 @@ public class MovieMapper {
     public static MovieResponse toMovieResponse(Movie movie){
 
         List<CategoryResponse> categories = movie.getCategories().stream()
-                .map(category -> CategoryMapper.toCategoryResponse(category))
+                .map(CategoryMapper::toCategoryResponse)
                 .toList();
 
-       List<StreamingResponse> streamingRes = movie.getStreamings().stream()
-                .map(streaming -> StreamingMapper.toStreamingResponse(streaming))
+        List<StreamingResponse> streamingRes = movie.getStreamings().stream()
+                .map(StreamingMapper::toStreamingResponse)
                 .toList();
 
         return MovieResponse.builder()
                 .id(movie.getId())
                 .title(movie.getTitle())
                 .description(movie.getDescription())
-                .
-
-                clea
-        gireleaseDate(movie.getReleaseDate())
+                .releaseDate(movie.getReleaseDate())
                 .rating(movie.getRating())
                 .categories(categories)
                 .streaming(streamingRes)

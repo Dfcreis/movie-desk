@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,15 @@ public class MovieServices {
         return movieRepository.findAll();
     }
 
+
+
+    public Optional<Movie> findById(Long id) {
+        return movieRepository.findById(id);
+    }
+
+
+
+
     private List<Category> listCategories(List<Category> categories){
         List<Category> categoryList = new ArrayList<>();
         categories.forEach(category -> {
@@ -44,6 +54,8 @@ public class MovieServices {
         });
         return streamingList;
     }
+
+
 
 
 }
