@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("/movieDesk/movie")
@@ -57,8 +59,13 @@ public class MovieController {
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam Long id) {
-        movieServices.delete(id);
-        return ResponseEntity.noContent().build();
+        Optional<Movie> movieDelete = movieServices.findById(id);
+        if (movieDelete.isPresent()) {
+            movieServices.delete(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
