@@ -1,0 +1,29 @@
+package com.movieDesk.MovieDesk.config;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.movieDesk.MovieDesk.entity.User;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+
+@Component
+public class TokenServices {
+
+    @Value("${MovieDesk.security.secret}")
+    private String secret;
+
+    public String generateToken(User user) {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
+
+        return JWT.create()
+                .withIssuer("API_MovieDesk")
+                .withSubject(user.getEmail())
+                .withClaim("name", user.getName())
+                .withClaim("id", user.getId())
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plusSeconds(86400))
+                .sign(algorithm);
+    }
+}
