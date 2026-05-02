@@ -5,6 +5,7 @@ import com.movieDesk.MovieDesk.controller.response.StreamingResponse;
 import com.movieDesk.MovieDesk.entity.Streaming;
 import com.movieDesk.MovieDesk.mapper.StreamingMapper;
 import com.movieDesk.MovieDesk.services.StreamingServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class StreamingController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<StreamingResponse> save(@RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> save(@Valid @RequestBody StreamingRequest request) {
 
         Streaming saveStreaming = streamingServices
                 .create(StreamingMapper.toStreaming(request));

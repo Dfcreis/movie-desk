@@ -1,10 +1,13 @@
 package com.movieDesk.MovieDesk.services;
 
+import com.movieDesk.MovieDesk.config.JwtUserData;
 import com.movieDesk.MovieDesk.entity.Category;
 import com.movieDesk.MovieDesk.entity.Movie;
 import com.movieDesk.MovieDesk.entity.Streaming;
 import com.movieDesk.MovieDesk.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ public class MovieServices {
 
             List<Category> categories = this.listCategories(movie.getCategories());
             List<Streaming> streamings = this.listStreaming(movie.getStreamings());
+            JwtUserData principal = (JwtUserData) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             Movie movieToUpdate = byId.get();
             movieToUpdate.setTitle(movie.getTitle());

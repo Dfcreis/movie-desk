@@ -5,6 +5,7 @@ import com.movieDesk.MovieDesk.controller.response.CategoryResponse;
 import com.movieDesk.MovieDesk.entity.Category;
 import com.movieDesk.MovieDesk.mapper.CategoryMapper;
 import com.movieDesk.MovieDesk.services.CategoryServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest request) {
 
        Category category = CategoryMapper.toCategory(request);
        Category saveCategory = categoryServices.createCategory(category);

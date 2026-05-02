@@ -7,9 +7,11 @@ import com.movieDesk.MovieDesk.controller.request.UserRequest;
 import com.movieDesk.MovieDesk.controller.response.LoginResponse;
 import com.movieDesk.MovieDesk.controller.response.UserResponse;
 import com.movieDesk.MovieDesk.entity.User;
+import com.movieDesk.MovieDesk.exeption.UserNameOrPasswordIvalidExeption;
 import com.movieDesk.MovieDesk.mapper.UserMapper;
 import com.movieDesk.MovieDesk.services.UserServices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +39,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
-        Authentication authenticate = authenticationManager.authenticate(userAndPass);
 
-        User user = (User) authenticate.getPrincipal();
-        String token = tokenServices.generateToken(user);
+        try{
+            UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
+            Authentication authenticate = authenticationManager.authenticate(userAndPass);
 
-        return ResponseEntity.ok(new LoginResponse(token));
+            User user = (User) authenticate.getPrincipal();
+            String token = tokenServices.generateToken(user);
+
+            return ResponseEntity.ok(new LoginResponse(token));
+
+        }catch (BadCredentialsException e){
+            throw new UserNameOrPasswordIvalidExeption("Usuario ou senha invalido");
+        }
     }
 }
